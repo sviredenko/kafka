@@ -1,0 +1,10 @@
+{"namespace": "ru.sviredenko",
+"type": "record",
+ "name": "KafkaRecord",
+ "fields": [
+     {"name": "id", "type": "string"},
+     {"name": "username", "type": ["string", "null"]},
+     {"name": "useraddress", "type": ["string", "null"]},
+     {"name": "language", "type": ["string", "null"], "default": "None"}
+ ]
+}
