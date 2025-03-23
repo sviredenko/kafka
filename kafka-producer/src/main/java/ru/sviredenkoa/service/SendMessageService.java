@@ -8,6 +8,7 @@ import ru.sviredenkoa.KafkaProducer;
 @AllArgsConstructor
 public class SendMessageService {
     private final KafkaProducer kafkaProducer;
+    private final
 
-    //sendMessage()
+    sendMessage()
 }

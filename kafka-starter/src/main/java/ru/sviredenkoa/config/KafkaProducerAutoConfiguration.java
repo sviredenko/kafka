@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ru.sviredenkoa.service.ProducerService;
 
 import java.util.Properties;
 
@@ -22,6 +23,13 @@ public class KafkaProducerAutoConfiguration {
         return new KafkaProducer<>(properties);
     }
 
+    @Bean
+    @ConditionalOnProperty(value = "kafka.producer.enable", havingValue = "true", matchIfMissing = false)
+    ProducerService  producerService(KafkaProducer producer,
+                                     KafkaProducerProperties kafkaProducerProperties) {
+        return new ProducerService(producer,
+                kafkaProducerProperties.getTopic());
+    }
     static private Properties convertKafkaProperties(KafkaProducerProperties kafkaProducerProperties) {
         Properties properties =  new Properties();
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaProducerProperties.getServer());
@@ -32,7 +40,7 @@ public class KafkaProducerAutoConfiguration {
                 "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"" +
                         kafkaProducerProperties.getUser()
                         + "\" password=\"" + kafkaProducerProperties.getPassword() + "\";");
-        //properties.setProperty("schema.registry.url", kafkaProducerProperties.getRegistry());
+        properties.setProperty("schema.registry.url", kafkaProducerProperties.getRegistry());
         return properties;
     }
 }
